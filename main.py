@@ -17,3 +17,21 @@ PURPLE = (128, 0, 128)
 pygame.init()
 WIN = pygame.display.set_mode((WIDTH, WIDTH))
 
+# -------- NODE CLASS --------
+class Node:
+    def __init__(self, row, col):
+        self.row = row
+        self.col = col
+        self.color = WHITE
+        self.parent = None
+
+    def draw(self):
+        pygame.draw.rect(WIN, self.color,
+                         (self.col * CELL, self.row * CELL, CELL, CELL))
+
+    def __lt__(self, other):
+        return False
+
+# -------- GRID --------
+def make_grid():
+    return [[Node(i, j) for j in range(ROWS)] for i in range(ROWS)]
