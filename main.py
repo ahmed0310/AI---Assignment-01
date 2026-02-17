@@ -2,6 +2,7 @@ import pygame
 import sys
 import time
 from collections import deque
+import heapq
 
 # ---------------- CONFIG ----------------
 WIDTH = 600
@@ -141,7 +142,34 @@ def dfs(start, end, grid):
         time.sleep(0.02)
 
 
+# -------- UCS ALGORITHM --------
+def ucs(start, end, grid):
+    pq = []
+    heapq.heappush(pq, (0, start))
+    visited = set()
 
+    while pq:
+        pygame.event.pump()
+        cost, node = heapq.heappop(pq)
+
+        if node == end:
+            reconstruct(end, start, grid)
+            return
+
+        if node not in visited:
+            visited.add(node)
+            if node != start and node != end:
+                node.color = BLUE
+
+            for neighbor in get_neighbors(node, grid):
+                if neighbor not in visited:
+                    neighbor.parent = node
+                    heapq.heappush(pq, (cost+1, neighbor))
+                    if neighbor != end:
+                        neighbor.color = GREEN
+
+        draw_grid(grid, start, end)
+        time.sleep(0.02)
 
 # ------------MAIN LOOP ------------
 def main():
@@ -170,8 +198,8 @@ def main():
                     bfs(start, end, grid)
                 if event.key == pygame.K_2:
                     dfs(start, end, grid)
-                # if event.key == pygame.K_3:
-                #     ucs(start, end, grid)
+                if event.key == pygame.K_3:
+                    ucs(start, end, grid)
                 # if event.key == pygame.K_4:
                 #     dls(start, end, grid, limit=20)
                 # if event.key == pygame.K_5:
