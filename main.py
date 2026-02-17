@@ -1,5 +1,6 @@
 import pygame
 import sys
+import time
 
 # ---------------- CONFIG ----------------
 WIDTH = 600
@@ -51,3 +52,32 @@ def draw_grid(grid, start, end):
     end.color = RED
 
     pygame.display.update()
+
+def reset_grid(grid, start, end):
+    for row in grid:
+        for node in row:
+            if node.color not in (BLACK, YELLOW, RED):
+                node.color = WHITE
+            node.parent = None
+
+def get_neighbors(node, grid):
+    r, c = node.row, node.col
+    directions = [
+        (-1, 0), (0, 1), (1, 0), (1, 1), (0, -1), (-1, -1)
+    ]
+    neighbors = []
+    for dr, dc in directions:
+        nr, nc = r + dr, c + dc
+        if 0 <= nr < ROWS and 0 <= nc < ROWS:
+            if grid[nr][nc].color != BLACK:
+                neighbors.append(grid[nr][nc])
+    return neighbors
+
+def reconstruct(end, start, grid):
+    current = end
+    while current.parent and current != start:
+        current = current.parent
+        if current != start:
+            current.color = PURPLE
+        draw_grid(grid, start, end)
+        time.sleep(0.05)
