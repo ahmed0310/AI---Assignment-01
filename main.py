@@ -207,7 +207,65 @@ def iddfs(start, end, grid):
         reset_grid(grid, start, end)
         if dls(start, end, grid, depth):
             return
-        
+
+
+
+# -------- BIDIRECTIONAL ALGORITHM --------
+def bidirectional(start, end, grid):
+    q1 = deque([start])
+    q2 = deque([end])
+
+    visited1 = {start}
+    visited2 = {end}
+
+    parent1 = {}
+    parent2 = {}
+
+    while q1 and q2:
+        pygame.event.pump()
+
+        node1 = q1.popleft()
+        for neighbor in get_neighbors(node1, grid):
+            if neighbor not in visited1:
+                visited1.add(neighbor)
+                parent1[neighbor] = node1
+                q1.append(neighbor)
+                if neighbor in visited2:
+                    meet = neighbor
+                    reconstruct_bidirectional(meet, parent1, parent2, start, end, grid)
+                    return
+
+        node2 = q2.popleft()
+        for neighbor in get_neighbors(node2, grid):
+            if neighbor not in visited2:
+                visited2.add(neighbor)
+                parent2[neighbor] = node2
+                q2.append(neighbor)
+                if neighbor in visited1:
+                    meet = neighbor
+                    reconstruct_bidirectional(meet, parent1, parent2, start, end, grid)
+                    return
+
+        draw_grid(grid, start, end)
+        time.sleep(0.02)
+
+def reconstruct_bidirectional(meet, parent1, parent2, start, end, grid):
+    current = meet
+    while current in parent1:
+        current = parent1[current]
+        if current != start:
+            current.color = PURPLE
+        draw_grid(grid, start, end)
+        time.sleep(0.02)
+
+    current = meet
+    while current in parent2:
+        current = parent2[current]
+        if current != end:
+            current.color = PURPLE
+        draw_grid(grid, start, end)
+        time.sleep(0.02)
+
 
 
 
@@ -244,8 +302,8 @@ def main():
                     dls(start, end, grid, limit=20)
                 if event.key == pygame.K_5:
                     iddfs(start, end, grid)
-                # if event.key == pygame.K_6:
-                #     bidirectional(start, end, grid)
+                if event.key == pygame.K_6:
+                    bidirectional(start, end, grid)
 
         draw_grid(grid, start, end)
 
