@@ -112,6 +112,33 @@ def bfs(start, end, grid):
         time.sleep(0.02)
 
 
+# -------- DFS ALGORITHM --------
+def dfs(start, end, grid):
+    stack = [start]
+    visited = set()
+
+    while stack:
+        pygame.event.pump()
+        node = stack.pop()
+
+        if node == end:
+            reconstruct(end, start, grid)
+            return
+
+        if node not in visited:
+            visited.add(node)
+            if node != start and node != end:
+                node.color = BLUE
+
+            for neighbor in reversed(get_neighbors(node, grid)):
+                if neighbor not in visited:
+                    neighbor.parent = node
+                    if neighbor != end:
+                        neighbor.color = GREEN
+                    stack.append(neighbor)
+
+        draw_grid(grid, start, end)
+        time.sleep(0.02)
 
 
 
@@ -141,8 +168,8 @@ def main():
 
                 if event.key == pygame.K_1:
                     bfs(start, end, grid)
-                # if event.key == pygame.K_2:
-                #     dfs(start, end, grid)
+                if event.key == pygame.K_2:
+                    dfs(start, end, grid)
                 # if event.key == pygame.K_3:
                 #     ucs(start, end, grid)
                 # if event.key == pygame.K_4:
