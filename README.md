@@ -1,90 +1,77 @@
-# Pathfinding Visualizer with Pygame
+# 📍 Pathfinding Visualizer with Pygame
 
-A visual demonstration of common pathfinding algorithms using **Python** and **Pygame**. Watch how different algorithms explore a grid to find the shortest path from a start node to a target node.
-
----
-
-## Features
-
-- Grid-based visualization
-- Interactive start and target nodes
-- Obstacle/wall support
-- Real-time animation of algorithm exploration
-- Supports multiple algorithms:
-  - **Breadth-First Search (BFS)**
-  - **Depth-First Search (DFS)**
-  - **Uniform-Cost Search (UCS)**
-  - **Depth-Limited Search (DLS)**
-  - **Iterative Deepening DFS (IDDFS)**
-  - **Bidirectional Search**
+A high-performance, interactive visualization tool built with **Python** and **Pygame**. This project demonstrates how various pathfinding algorithms navigate a grid, manage frontiers, and handle obstacles to find the most efficient route from a start node to a target.
 
 ---
 
-## Installation
+## 🚀 Features
 
-1. Make sure you have **Python 3.x** installed.
-2. Install `pygame`:
+* **Interactive Grid:** Click and drag to place start points, targets, and walls.
+* **Real-Time Animation:** Watch the algorithms "think" as they color-code explored vs. frontier nodes.
+* **Comprehensive Algorithm Suite:** Compare 6 different search strategies.
+* **Visual Path Tracing:** Once a target is found, the optimal path is reconstructed in real-time.
 
-```bash
+---
+
+## 🛠️ Algorithms Included
+
+| Key | Algorithm | Type | Strategy |
+| :--- | :--- | :--- | :--- |
+| `1` | **BFS** | Uninformed | Explores layer by layer (Guarantees shortest path). |
+| `2` | **DFS** | Uninformed | Explores as deep as possible (Fast, but not optimal). |
+| `3` | **UCS** | Uninformed | Account for path cost (Priority Queue based). |
+| `4` | **DLS** | Uninformed | DFS with a maximum depth limit. |
+| `5` | **IDDFS** | Uninformed | Increases depth limit iteratively (Memory efficient). |
+| `6` | **Bidirectional** | Uninformed | Searches from both ends simultaneously. |
+
+---
+
+## 💻 Installation
+
+### Prerequisites
+* **Python 3.x**
+* **pip** (Python package manager)
+
+### Setup
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/yourusername/pathfinding-visualizer.git](https://github.com/yourusername/pathfinding-visualizer.git)
+   cd pathfinding-visualizer
+Install dependencies:
+
+Bash
 pip install pygame
-Download or clone this repository.
+Run the application:
 
-Run the program:
-
+Bash
 python pathfinding_visualizer.py
-Usage
-The grid is 20x20 cells by default.
+🎮 How to Use
+Set Start/End: The first two clicks place the Yellow (Start) and Red (End) nodes.
 
-Start node: Yellow
+Draw Obstacles: Click and drag to create Black (Wall) nodes that the algorithm must navigate around.
 
-End node: Red
+Run Algorithm: Press keys 1 through 6 to start the visualization.
 
-Wall/obstacle: Black
+Reset: (Optional: Insert your reset key here, e.g., "Press SPACE to clear").
 
-Frontier nodes (nodes being explored): Green
+Visual Legend
+🟨 Yellow: Start Node
 
-Explored nodes: Blue
+🟥 Red: Target Node
 
-Final path: Purple
+⬛ Black: Wall / Obstacle
 
-Keyboard Controls (select algorithm):
+🟩 Green: Frontier (Nodes currently being considered)
 
-Key	Algorithm
-1	Breadth-First Search (BFS)
-2	Depth-First Search (DFS)
-3	Uniform-Cost Search (UCS)
-4	Depth-Limited Search (DLS)
-5	Iterative Deepening DFS (IDDFS)
-6	Bidirectional Search
-Quit: Close the window or press ESC.
+🟦 Blue: Explored (Nodes already visited)
 
-How It Works
-The program initializes a grid of nodes.
+🟪 Purple: Final Path
 
-Users can set walls and watch how algorithms explore paths from start → end.
+⚙️ Customization
+You can easily tweak the simulation parameters within the source code:
 
-Each algorithm uses its own exploration strategy:
+Grid Density: Modify the ROWS variable to increase or decrease node count.
 
-BFS/DFS: Queue/Stack
+Window Size: Adjust the WIDTH constant to fit your display.
 
-UCS: Priority queue (cost-based)
-
-DLS/IDDFS: Depth-limited iterations
-
-Bidirectional: Two BFS searches meet in the middle
-
-The final path is traced back from the target node to the start node.
-
-Customization
-Change grid size by modifying ROWS.
-
-Adjust window width by changing WIDTH.
-
-Change colors for nodes by updating the color variables.
-
-Add or remove diagonal movement in the get_neighbors() function.
-
-Dependencies
-Python 3.x
-
-Pygame (pip install pygame)
+Movement Logic: Update the get_neighbors() function to enable or disable diagonal movement.
