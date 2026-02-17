@@ -171,6 +171,46 @@ def ucs(start, end, grid):
         draw_grid(grid, start, end)
         time.sleep(0.02)
 
+# -------- DLS ALGORITHM --------
+def dls(start, end, grid, limit):
+    stack = [(start, 0)]
+    visited = set()
+
+    while stack:
+        pygame.event.pump()
+        node, depth = stack.pop()
+
+        if node == end:
+            reconstruct(end, start, grid)
+            return True
+
+        if depth <= limit:
+            if node not in visited:
+                visited.add(node)
+                if node != start and node != end:
+                    node.color = BLUE
+
+                for neighbor in reversed(get_neighbors(node, grid)):
+                    neighbor.parent = node
+                    stack.append((neighbor, depth+1))
+                    if neighbor != end:
+                        neighbor.color = GREEN
+
+        draw_grid(grid, start, end)
+        time.sleep(0.02)
+
+    return False
+
+
+def iddfs(start, end, grid):
+    for depth in range(ROWS * ROWS):
+        reset_grid(grid, start, end)
+        if dls(start, end, grid, depth):
+            return
+        
+
+
+
 # ------------MAIN LOOP ------------
 def main():
     grid = make_grid()
@@ -200,10 +240,10 @@ def main():
                     dfs(start, end, grid)
                 if event.key == pygame.K_3:
                     ucs(start, end, grid)
-                # if event.key == pygame.K_4:
-                #     dls(start, end, grid, limit=20)
-                # if event.key == pygame.K_5:
-                #     iddfs(start, end, grid)
+                if event.key == pygame.K_4:
+                    dls(start, end, grid, limit=20)
+                if event.key == pygame.K_5:
+                    iddfs(start, end, grid)
                 # if event.key == pygame.K_6:
                 #     bidirectional(start, end, grid)
 
