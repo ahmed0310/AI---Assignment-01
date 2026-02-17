@@ -1,6 +1,7 @@
 import pygame
 import sys
 import time
+from collections import deque
 
 # ---------------- CONFIG ----------------
 WIDTH = 600
@@ -81,3 +82,76 @@ def reconstruct(end, start, grid):
             current.color = PURPLE
         draw_grid(grid, start, end)
         time.sleep(0.05)
+
+
+# -------- BFS ALGORITHM --------
+def bfs(start, end, grid):
+    q = deque([start])
+    visited = set([start])
+
+    while q:
+        pygame.event.pump()
+        node = q.popleft()
+
+        if node == end:
+            reconstruct(end, start, grid)
+            return
+
+        for neighbor in get_neighbors(node, grid):
+            if neighbor not in visited:
+                visited.add(neighbor)
+                neighbor.parent = node
+                if neighbor != end:
+                    neighbor.color = GREEN
+                q.append(neighbor)
+
+        if node != start and node != end:
+            node.color = BLUE
+
+        draw_grid(grid, start, end)
+        time.sleep(0.02)
+
+
+
+
+
+
+# ------------MAIN LOOP ------------
+def main():
+    grid = make_grid()
+    start = grid[2][2]
+    end = grid[17][17]
+
+    start.color = YELLOW
+    end.color = RED
+
+    for i in range(5, 15):
+        grid[i][10].color = BLACK
+
+    draw_grid(grid, start, end)
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.KEYDOWN:
+                reset_grid(grid, start, end)
+
+                if event.key == pygame.K_1:
+                    bfs(start, end, grid)
+                # if event.key == pygame.K_2:
+                #     dfs(start, end, grid)
+                # if event.key == pygame.K_3:
+                #     ucs(start, end, grid)
+                # if event.key == pygame.K_4:
+                #     dls(start, end, grid, limit=20)
+                # if event.key == pygame.K_5:
+                #     iddfs(start, end, grid)
+                # if event.key == pygame.K_6:
+                #     bidirectional(start, end, grid)
+
+        draw_grid(grid, start, end)
+
+main()
