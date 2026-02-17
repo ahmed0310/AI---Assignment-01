@@ -35,3 +35,19 @@ class Node:
 # -------- GRID --------
 def make_grid():
     return [[Node(i, j) for j in range(ROWS)] for i in range(ROWS)]
+
+
+def draw_grid(grid, start, end):
+    WIN.fill(WHITE)
+    for row in grid:
+        for node in row:
+            node.draw()
+
+    for i in range(ROWS):
+        pygame.draw.line(WIN, BLACK, (0, i*CELL), (WIDTH, i*CELL))
+        pygame.draw.line(WIN, BLACK, (i*CELL, 0), (i*CELL, WIDTH))
+
+    start.color = YELLOW
+    end.color = RED
+
+    pygame.display.update()
